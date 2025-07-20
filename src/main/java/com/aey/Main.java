@@ -1,37 +1,32 @@
 package com.aey;
 
-import com.aey.mox.core.Prop;
-import com.aey.mox.examples.UserContext;
-import com.aey.mox.examples.entities.ErrorCodes;
-import com.aey.mox.examples.entities.Role;
-import com.aey.mox.examples.entities.User;
-
-import java.util.List;
+import com.aey.examples._01.CustomContext;
+import com.aey.examples._01.User;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello, World!");
+        // user input from a front-end application
+        User userOne = new User("Yael Moya", "yael@email.com", 25);
 
-        User user = new User("Yael", 25, "yael@gmail.com");
-        User userTwo = new User("Alejandro", 27, "ale_taboa@gmail.com");
-        Role adminRole = new Role(1, "ADMIN");
-        List<User> users = List.of(user, userTwo);
+        // create your custom context
+        CustomContext cc = new CustomContext();
+        // declare a prop in your custom context
+        cc.set("userDB", userOne);
+        System.out.println(cc);
 
-        UserContext userContext = new UserContext();
+        // Some operations (like get sequence from db)
+        int id = (int)(Math.random() * 100) + 1;
+        cc.<User>get("userDB")
+            .ifPresent(u -> {
+                u.setUserId(id);
+                cc.result(u);
+            });
 
-        userContext.set(Prop.bind("adminRole", adminRole));
-        userContext.set(Prop.bind("action", "create"));
-        //userContext.set("user", user);
-        userContext.setUsers(users);
+        if (cc.isSome()) {
 
-        if (userContext.get("user").isPresent()) {
-            userContext.result("user");
-        } else {
-            userContext.setErr(ErrorCodes.NOT_FOUND);
+            System.out.println(cc);
         }
 
-        System.out.println(userContext);
-        System.out.println(userContext.get("adminRole"));
 
     }
 }
