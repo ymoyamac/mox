@@ -10,7 +10,9 @@ import com.aey.mox.observer.listeners.EventListener;
 
 public class EventManager implements EventBus {
 
-    Map<String, List<EventListener<?>>> listeners = new HashMap<>();
+    private Map<String, List<EventListener>> listeners = new HashMap<>();
+
+    public EventManager() {}
 
     public EventManager(String ...operations) {
         for (String operation : operations) {
@@ -19,21 +21,23 @@ public class EventManager implements EventBus {
     }
 
     @Override
-    public <T> void subscribe(String eventType, EventListener<T> listener) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'subscribe'");
+    public <T> void subscribe(String eventType, EventListener listener) {
+        List<EventListener> e = this.listeners.get(eventType);
+        e.add(listener);
     }
 
     @Override
-    public <T> void unsubscribe(String eventType, EventListener<T> listener) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'unsubscribe'");
+    public <T> void unsubscribe(String eventType, EventListener listener) {
+        List<EventListener> e = this.listeners.get(eventType);
+        e.remove(listener);
     }
 
     @Override
-    public <T> void emit(T event) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'notify'");
+    public <T> void emit(String eventType, T obj) {
+        List<EventListener> e = this.listeners.get(eventType);
+        for (EventListener listener : e) {
+            listener.update(eventType, obj);
+        }
     }
     
 }

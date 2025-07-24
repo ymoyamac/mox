@@ -1,5 +1,5 @@
 package com.aey.mox.observer.listeners;
 
-public interface EventListener<T> { // Observe
-    void update(final String eventType, T event);
+public interface EventListener { // Observe
+    <U> void update(final String eventType, U event);
 }
