@@ -1,7 +1,5 @@
-package com.aey;
+package com.aey.examples._01;
 
-import com.aey.examples._01.CustomContext;
-import com.aey.examples._01.User;
 import com.aey.mox.core.Context;
 import com.aey.mox.core.Prop;
 
@@ -11,7 +9,7 @@ public class Main {
         User userOne = new User("Yael Moya", "yael@email.com", 25);
 
         // Create context and custom context
-        Context<User, Exception> context = new Context<>();
+        Context<User, Exception> context = new Context<>("publish");
         CustomContext cc = new CustomContext();
 
         // subscribe custom context
@@ -19,7 +17,7 @@ public class Main {
         // publish the user
         context.events().emit("publish", userOne);
 
-        System.out.println("OK(" + cc.ok().toString() + ")");
+        System.out.println("OK(" + context.ok().toString() + ")");
 
         // Some random actions like get sequece from db
         int id = (int)(Math.random() * 100) + 1;
@@ -33,9 +31,15 @@ public class Main {
         // publish the user again with the userId
         context.events().emit("publish", userOne);
 
-        // Finally, when you want the most up-to-date value, check the OK field.
-        System.out.println("OK(" + cc.ok().toString() + ")");
+        System.out.println(context.isSome());
 
+        // Finally, when you want the most up-to-date value, check the OK field.
+        System.out.println("OK(" + context.ok().toString() + ")");
+
+        // unsubscribe
+        context.unsubscribe("publish", cc);
+
+        System.out.println(context.isSome());
 
     }
 }

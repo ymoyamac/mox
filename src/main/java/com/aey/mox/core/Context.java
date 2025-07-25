@@ -9,11 +9,10 @@ import com.aey.mox.publisher.EventManager;
 public class Context<T, E> extends EventManager {
 
     private final Map<String, Prop<?>> props = new HashMap<>();
-    private Optional<T> ok;
     private E err;
 
-    public Context() {
-        super("publish", "block");
+    public Context(String ...operations) {
+        super(operations);
     }
 
     public EventManager events() {
@@ -47,10 +46,6 @@ public class Context<T, E> extends EventManager {
             throw new ClassCastException("Expected type " + prop.getClazz() + ", but got " + prop.getValue().getClass());
         }
         return Optional.ofNullable((U) prop.getValue());
-    }
-
-    public final boolean isSome() {
-        return this.ok != null && this.ok.isPresent();
     }
 
     public final E err(E err) {
