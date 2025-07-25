@@ -4,11 +4,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class Context<T, E> {
+import com.aey.mox.publisher.EventManager;
 
-    protected final Map<String, Prop<?>> props = new HashMap<>();
-    protected Optional<T> ok;
-    protected E err;
+public class Context<T, E> extends EventManager {
+
+    private final Map<String, Prop<?>> props = new HashMap<>();
+    private Optional<T> ok;
+    private E err;
+
+    public Context() {
+        super("publish", "block");
+    }
+
+    public EventManager events() {
+        return this;
+    }
 
     public final Map<String, Prop<?>> getProps() {
         return this.props;
@@ -41,14 +51,6 @@ public abstract class Context<T, E> {
 
     public final boolean isSome() {
         return this.ok != null && this.ok.isPresent();
-    }
-
-    public final void result(T ok) {
-        this.ok = Optional.of(ok);
-    }
-
-    public final Optional<T> ok() {
-        return this.ok;
     }
 
     public final E err(E err) {

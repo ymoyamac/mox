@@ -1,27 +1,21 @@
 package com.aey.examples._01;
 
-import com.aey.mox.core.Context;
+import java.util.Optional;
 
-public class CustomContext extends Context<User, UserErr> {
+import com.aey.mox.listeners.EventListener;
 
-    private User userToInsert;
+public class CustomContext implements EventListener {
 
-    public User getUserToInsert() {
-        return userToInsert;
-    }
-
-    public void setUserToInsert(User userToInsert) {
-        this.userToInsert = userToInsert;
-    }
+    private Optional<User> ok;
 
     @Override
-    public String toString() {
-        return "CustomContext [" + "\n" +
-                "\tprops: " + super.getProps() + "\n" +
-                "\trestul: " + super.ok() + "\n" +
-                "\tuserToInsert: " + userToInsert + "\n" +
-            "]";
+    public <U> void update(String eventType, U event) {
+        System.out.println("CustomeContext: " + event.toString());
+        this.ok = Optional.ofNullable((User) event);
     }
 
+    public Optional<User> ok() {
+        return this.ok;
+    }
     
 }

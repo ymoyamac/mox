@@ -2,30 +2,39 @@ package com.aey;
 
 import com.aey.examples._01.CustomContext;
 import com.aey.examples._01.User;
+import com.aey.mox.core.Context;
+import com.aey.mox.core.Prop;
 
 public class Main {
     public static void main(String[] args) {
         // user input from a front-end application
         User userOne = new User("Yael Moya", "yael@email.com", 25);
 
-        // create your custom context
+        // Create context and custom context
+        Context<User, Exception> context = new Context<>();
         CustomContext cc = new CustomContext();
-        // declare a prop in your custom context
-        cc.set("userDB", userOne);
-        System.out.println(cc);
 
-        // Some operations (like get sequence from db)
+        // subscribe custom context
+        context.events().subscribe("publish", cc);
+        // publish the user
+        context.events().emit("publish", userOne);
+
+        System.out.println("OK(" + cc.ok().toString() + ")");
+
+        // Some random actions like get sequece from db
         int id = (int)(Math.random() * 100) + 1;
-        cc.<User>get("userDB")
-            .ifPresent(u -> {
-                u.setUserId(id);
-                cc.result(u);
-            });
 
-        if (cc.isSome()) {
+        // Set prop in context
+        context.set(Prop.bind("userId", id));
 
-            System.out.println(cc);
-        }
+        // Get userId prop from context and set to user
+        context.<Integer>get("userId").ifPresent(uid -> userOne.setUserId(uid));
+
+        // publish the user again with the userId
+        context.events().emit("publish", userOne);
+
+        // Finally, when you want the most up-to-date value, check the OK field.
+        System.out.println("OK(" + cc.ok().toString() + ")");
 
 
     }

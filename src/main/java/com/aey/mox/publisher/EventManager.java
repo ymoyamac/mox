@@ -1,16 +1,15 @@
-package com.aey.mox.observer.publisher;
+package com.aey.mox.publisher;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.aey.mox.observer.listeners.EventBus;
-import com.aey.mox.observer.listeners.EventListener;
+import com.aey.mox.listeners.EventBus;
+import com.aey.mox.listeners.EventListener;
 
 public class EventManager implements EventBus {
-
-    private Map<String, List<EventListener>> listeners = new HashMap<>();
+    protected final Map<String, List<EventListener>> listeners = new HashMap<>();
 
     public EventManager() {}
 
@@ -21,23 +20,29 @@ public class EventManager implements EventBus {
     }
 
     @Override
-    public <T> void subscribe(String eventType, EventListener listener) {
+    public <U> void subscribe(String eventType, EventListener listener) {
         List<EventListener> e = this.listeners.get(eventType);
         e.add(listener);
     }
 
     @Override
-    public <T> void unsubscribe(String eventType, EventListener listener) {
+    public <U> void unsubscribe(String eventType, EventListener listener) {
         List<EventListener> e = this.listeners.get(eventType);
         e.remove(listener);
     }
 
     @Override
-    public <T> void emit(String eventType, T obj) {
+    public <U> void emit(String eventType, U obj) {
         List<EventListener> e = this.listeners.get(eventType);
         for (EventListener listener : e) {
             listener.update(eventType, obj);
         }
     }
+
+    @Override
+    public String toString() {
+        return "EventManager [listeners=" + listeners + "]";
+    }
+
     
 }
