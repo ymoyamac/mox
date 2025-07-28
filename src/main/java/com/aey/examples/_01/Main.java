@@ -1,7 +1,5 @@
 package com.aey.examples._01;
 
-import java.util.EventListener;
-
 import com.aey.mox.core.Context;
 import com.aey.mox.core.Prop;
 
@@ -17,9 +15,9 @@ public class Main {
         // subscribe custom context
         context.events().subscribe("publish", cc);
         // publish the user
-        context.events().emit("publish", userOne);
+        context.events().emit("publish", cc, userOne);
 
-        System.out.println("OK(" + context.<EventListener>ok("publish", cc).toString() + ")");
+        System.out.println("OK(" + context.ok("publish", cc).toString() + ")");
 
         // Some random actions like get sequece from db
         int id = (int)(Math.random() * 100) + 1;
@@ -31,7 +29,7 @@ public class Main {
         context.<Integer>get("userId").ifPresent(uid -> userOne.setUserId(uid));
 
         // publish the user again with the userId
-        context.events().emit("publish", userOne);
+        context.events().emit("publish", cc, userOne);
 
         System.out.println(context.isSome("publish", cc));
 

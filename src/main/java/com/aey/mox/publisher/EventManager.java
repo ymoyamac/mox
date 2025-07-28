@@ -41,18 +41,21 @@ public class EventManager implements EventBus {
     }
 
     @Override
-    public <U> void emit(String eventType, U obj) {
-        List<Listener> e = this.tableListeners.get(eventType);
-        for (Listener listener : e) {
-            listener.getEventListener().update(eventType, obj);
-            listener.setSome(obj);
-        }
+    public <U> void emit(String eventType, EventListener eventListener, U obj) {
+        this.tableListeners.get(eventType)
+            .stream()
+            .filter(l -> l.getEventListener().equals(eventListener))
+            .findFirst()
+            .ifPresent(listener -> {
+                listener.getEventListener().update(eventType, obj);
+                listener.setSome(obj);
+            });
     }
 
     @SuppressWarnings("unchecked")
-    public <T> Optional<T> ok(String eventType, EventListener eventListener) {
-        List<Listener> e = this.tableListeners.get(eventType);
-        return (Optional<T>) e.stream()
+    public Optional<EventListener> ok(String eventType, EventListener eventListener) {
+        return (Optional<EventListener>) this.tableListeners.get(eventType)
+            .stream()
             .filter(l -> l.getEventListener().equals(eventListener))
             .findFirst()
             .get()
@@ -60,8 +63,8 @@ public class EventManager implements EventBus {
     }
 
     public boolean isSome(String eventType, EventListener eventListener) {
-        List<Listener> e = this.tableListeners.get(eventType);
-        return e.stream()
+        return this.tableListeners.get(eventType)
+            .stream()
             .filter(l -> l.getEventListener().equals(eventListener))
             .findFirst()
             .isPresent();
