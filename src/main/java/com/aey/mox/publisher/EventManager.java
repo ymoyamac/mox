@@ -8,66 +8,71 @@ import java.util.Optional;
 
 import com.aey.mox.listeners.EventBus;
 import com.aey.mox.listeners.EventListener;
+import com.aey.mox.listeners.Listener;
 
 public class EventManager implements EventBus {
-    private final Map<String, List<EventListener>> listeners = new HashMap<>();
-
-    // este campo ok debe de estar envuelto en una clase que contenga `List<EventListener>` y el `ok`
-    // por que si existe más de un listenner el ok se va a sobreescribir
-    // crear una clase `Listener` para que se vea así
-    // ```
-    // public class Listener {
-    //      private List<EventListener>
-    //      private Optional<T> ok
-    // }```
-    // `private final Map<String, Listener> listeners = new HashMap<>();`
-    private Optional<Object> ok;
+    protected final Map<String, List<Listener>> tableListeners = new HashMap<>();
 
     public EventManager() {}
 
     public EventManager(String ...operations) {
         for (String operation : operations) {
-            this.listeners.put(operation, new ArrayList<>());
+            this.tableListeners.put(operation, new ArrayList<>());
         }
     }
 
     @Override
-    public <U> void subscribe(String eventType, EventListener listener) {
-        List<EventListener> e = this.listeners.get(eventType);
-        e.add(listener);
+    public <U> void subscribe(String eventType, EventListener eventListener) {
+        List<Listener> e = this.tableListeners.get(eventType);
+        e.add(new Listener(eventListener));
     }
 
     @Override
-    public <U> void unsubscribe(String eventType, EventListener listener) {
-        List<EventListener> e = this.listeners.get(eventType);
-        e.remove(listener);
-        // aquí sobreescribiría el valor de `ok` a null, "todos los listeners comparten el ok
-        // como si fuera un Singleton"
-        this.ok = null;
+    public <U> void unsubscribe(String eventType, EventListener eventListener) {
+        List<Listener> e = this.tableListeners.get(eventType);
+        if (e.size() == 0) {
+            this.tableListeners.remove(eventType);
+            return;
+        }
+        e.stream()
+            .filter(l -> l.getEventListener().equals(eventListener))
+            .findFirst()
+            .ifPresent(listener -> e.remove(listener));
     }
 
     @Override
     public <U> void emit(String eventType, U obj) {
-        List<EventListener> e = this.listeners.get(eventType);
-        for (EventListener listener : e) {
-            listener.update(eventType, obj);
-            this.ok = Optional.of(obj);
+        List<Listener> e = this.tableListeners.get(eventType);
+        for (Listener listener : e) {
+            listener.getEventListener().update(eventType, obj);
+            listener.setSome(obj);
         }
     }
 
-    
-    public final boolean isSome() {
-        return this.ok != null && this.ok.isPresent();
+    @SuppressWarnings("unchecked")
+    public <T> Optional<T> ok(String eventType, EventListener eventListener) {
+        List<Listener> e = this.tableListeners.get(eventType);
+        return (Optional<T>) e.stream()
+            .filter(l -> l.getEventListener().equals(eventListener))
+            .findFirst()
+            .get()
+            .some();
     }
 
-    public Optional<Object> ok() {
-        return this.ok;
+    public boolean isSome(String eventType, EventListener eventListener) {
+        List<Listener> e = this.tableListeners.get(eventType);
+        Optional<Listener> listener = e.stream()
+            .filter(l -> l.getEventListener().equals(eventListener))
+            .findFirst();
+        if (listener.isEmpty()) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public String toString() {
-        return "EventManager [listeners=" + listeners + "]";
+        return "EventManager [listeners=" + tableListeners + "]";
     }
-
     
 }

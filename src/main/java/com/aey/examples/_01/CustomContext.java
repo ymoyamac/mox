@@ -10,4 +10,9 @@ public class CustomContext implements EventListener {
         System.out.println("CustomeContext: " + event.toString());
     }
 
+    @Override
+    public String toString() {
+        return "CustomContext []";
+    }
+
 }

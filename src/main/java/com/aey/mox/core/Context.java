@@ -51,7 +51,11 @@ public class Context<T, E> extends EventManager {
     public final E err(E err) {
         this.err = err;
         return err;
-    };
+    }
 
+    @Override
+    public String toString() {
+        return "Context [props=" + props + ", tableListeners=" + super.tableListeners + ", err=" + err + "]";
+    };
 
 }
