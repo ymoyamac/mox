@@ -1,6 +1,8 @@
-package com.aey.mox.listeners;
+package com.aey.mox.core;
 
 import java.util.Optional;
+
+import com.aey.mox.listeners.EventListener;
 
 public class Listener {
 
@@ -24,15 +26,9 @@ public class Listener {
         return this.some;
     }
 
-    public final boolean isSome() {
-        return this.some != null && this.some.isPresent();
-    }
-
     @Override
     public String toString() {
         return "Listener [eventListener=" + eventListener + ", some=" + some + "]";
     }
-
-    
 
 }

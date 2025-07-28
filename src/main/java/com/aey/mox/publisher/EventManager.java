@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.aey.mox.core.Listener;
 import com.aey.mox.listeners.EventBus;
 import com.aey.mox.listeners.EventListener;
-import com.aey.mox.listeners.Listener;
 
 public class EventManager implements EventBus {
     protected final Map<String, List<Listener>> tableListeners = new HashMap<>();
@@ -64,10 +64,7 @@ public class EventManager implements EventBus {
         Optional<Listener> listener = e.stream()
             .filter(l -> l.getEventListener().equals(eventListener))
             .findFirst();
-        if (listener.isEmpty()) {
-            return false;
-        }
-        return true;
+        return listener.isPresent();
     }
 
     @Override
