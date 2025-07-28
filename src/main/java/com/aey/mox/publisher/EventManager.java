@@ -61,10 +61,10 @@ public class EventManager implements EventBus {
 
     public boolean isSome(String eventType, EventListener eventListener) {
         List<Listener> e = this.tableListeners.get(eventType);
-        Optional<Listener> listener = e.stream()
+        return e.stream()
             .filter(l -> l.getEventListener().equals(eventListener))
-            .findFirst();
-        return listener.isPresent();
+            .findFirst()
+            .isPresent();
     }
 
     @Override
