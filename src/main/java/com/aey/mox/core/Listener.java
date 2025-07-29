@@ -4,10 +4,10 @@ import java.util.Optional;
 
 import com.aey.mox.listeners.EventListener;
 
-public class Listener {
+public class Listener<T> {
 
     private EventListener eventListener;
-    private Optional<?> some;
+    private Optional<T> some;
 
     public Listener(EventListener eventListener) {
         this.eventListener = eventListener;
@@ -18,11 +18,11 @@ public class Listener {
         return this.eventListener;
     }
 
-    public final <T> void setSome(T obj) {
+    public final void setSome(T obj) {
         this.some = Optional.ofNullable(obj);
     }
 
-    public final Optional<?> some() {
+    public final Optional<T> some() {
         return this.some;
     }
 

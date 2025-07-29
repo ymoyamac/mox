@@ -6,17 +6,13 @@ import java.util.Optional;
 
 import com.aey.mox.publisher.EventManager;
 
-public class Context<T, E> extends EventManager {
+public class Context<T, E> extends EventManager<T> {
 
     private final Map<String, Prop<?>> props = new HashMap<>();
     private E err;
 
     public Context(String ...operations) {
         super(operations);
-    }
-
-    public EventManager events() {
-        return this;
     }
 
     public final Map<String, Prop<?>> getProps() {

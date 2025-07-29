@@ -15,8 +15,8 @@ public class Main {
         UserContext userContext = new UserContext();
         RoleContext roleContext = new RoleContext();
 
-        context.events().subscribe(Actions.PUBLISH.getAction(), userContext);
-        context.events().subscribe(Actions.PUBLISH.getAction(), roleContext);
+        context.subscribe(Actions.PUBLISH.getAction(), userContext);
+        context.subscribe(Actions.PUBLISH.getAction(), roleContext);
 
         int id = (int)(Math.random() * 100) + 1;
 
@@ -28,8 +28,8 @@ public class Main {
 
         System.out.println(context);
 
-        context.events().emit(Actions.PUBLISH.getAction(), userContext, userOne);
-        context.events().emit(Actions.PUBLISH.getAction(), roleContext, role);
+        context.emit(Actions.PUBLISH.getAction(), userContext, userOne);
+        context.emit(Actions.PUBLISH.getAction(), roleContext, role);
 
         System.out.println(context);
 

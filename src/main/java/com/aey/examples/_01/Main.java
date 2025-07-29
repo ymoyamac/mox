@@ -13,9 +13,9 @@ public class Main {
         CustomContext cc = new CustomContext();
 
         // subscribe custom context
-        context.events().subscribe("publish", cc);
+        context.subscribe("publish", cc);
         // publish the user
-        context.events().emit("publish", cc, userOne);
+        context.emit("publish", cc, userOne);
 
         System.out.println("OK(" + context.ok("publish", cc).toString() + ")");
 
@@ -29,7 +29,7 @@ public class Main {
         context.<Integer>get("userId").ifPresent(uid -> userOne.setUserId(uid));
 
         // publish the user again with the userId
-        context.events().emit("publish", cc, userOne);
+        context.emit("publish", cc, userOne);
 
         System.out.println(context.isSome("publish", cc));
 

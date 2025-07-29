@@ -10,8 +10,8 @@ import com.aey.mox.core.Listener;
 import com.aey.mox.listeners.EventBus;
 import com.aey.mox.listeners.EventListener;
 
-public class EventManager implements EventBus {
-    protected final Map<String, List<Listener>> tableListeners = new HashMap<>();
+public class EventManager<T> implements EventBus {
+    protected final Map<String, List<Listener<T>>> tableListeners = new HashMap<>();
 
     public EventManager() {}
 
@@ -22,14 +22,14 @@ public class EventManager implements EventBus {
     }
 
     @Override
-    public <U> void subscribe(String eventType, EventListener eventListener) {
-        List<Listener> e = this.tableListeners.get(eventType);
-        e.add(new Listener(eventListener));
+    public void subscribe(String eventType, EventListener eventListener) {
+        List<Listener<T>> e = this.tableListeners.get(eventType);
+        e.add(new Listener<>(eventListener));
     }
 
     @Override
-    public <U> void unsubscribe(String eventType, EventListener eventListener) {
-        List<Listener> e = this.tableListeners.get(eventType);
+    public void unsubscribe(String eventType, EventListener eventListener) {
+        List<Listener<T>> e = this.tableListeners.get(eventType);
         if (e.size() == 0) {
             this.tableListeners.remove(eventType);
             return;
@@ -40,6 +40,7 @@ public class EventManager implements EventBus {
             .ifPresent(listener -> e.remove(listener));
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <U> void emit(String eventType, EventListener eventListener, U obj) {
         this.tableListeners.get(eventType)
@@ -48,18 +49,21 @@ public class EventManager implements EventBus {
             .findFirst()
             .ifPresent(listener -> {
                 listener.getEventListener().update(eventType, obj);
-                listener.setSome(obj);
+                listener.setSome((T) obj);
             });
     }
 
-    @SuppressWarnings("unchecked")
-    public Optional<EventListener> ok(String eventType, EventListener eventListener) {
-        return (Optional<EventListener>) this.tableListeners.get(eventType)
+    public Optional<T> ok(String eventType, EventListener eventListener) {
+        Optional<Listener<T>> optListener = (Optional<Listener<T>>) this.tableListeners.get(eventType)
             .stream()
             .filter(l -> l.getEventListener().equals(eventListener))
-            .findFirst()
-            .get()
-            .some();
+            .findFirst();
+
+        if (optListener.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return optListener.get().some();
     }
 
     public boolean isSome(String eventType, EventListener eventListener) {
