@@ -7,7 +7,7 @@ import com.aey.mox.core.Prop;
 public class Main {
     public static void main(String[] args) {
         // user input from a front-end application
-        User userOne = new User("Yael Moya", "yael@email.com", 25);
+        User userOne = new User("Foo Bar", "foo@bar.com", 25);
         Role role = new Role("ADMIN");
 
         Context<User, Exception> context = new Context<>(Actions.PUBLISH.getAction());
@@ -28,8 +28,8 @@ public class Main {
 
         System.out.println(context);
 
-        context.emit(Actions.PUBLISH.getAction(), userContext, userOne);
-        context.emit(Actions.PUBLISH.getAction(), roleContext, role);
+        context.notify(Actions.PUBLISH.getAction(), userContext, userOne);
+        context.notify(Actions.PUBLISH.getAction(), roleContext, role);
 
         System.out.println(context);
 

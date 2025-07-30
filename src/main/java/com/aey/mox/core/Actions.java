@@ -1,5 +1,8 @@
 package com.aey.mox.core;
 
+/**
+ * 
+ */
 public enum Actions {
     PUBLISH("publish")
     ;
