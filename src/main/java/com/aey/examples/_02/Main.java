@@ -18,6 +18,9 @@ public class Main {
         context.subscribe(Actions.PUBLISH.getAction(), userContext);
         context.subscribe(Actions.PUBLISH.getAction(), roleContext);
 
+        System.out.println(context.isSome(Actions.PUBLISH.getAction(), userContext));
+
+        // Some random actions like get sequece from db
         int id = (int)(Math.random() * 100) + 1;
 
         // Set prop in context
@@ -31,10 +34,13 @@ public class Main {
         context.notify(Actions.PUBLISH.getAction(), userContext, userOne);
         context.notify(Actions.PUBLISH.getAction(), roleContext, role);
 
-        System.out.println(context);
+        System.out.println(context.isSome(Actions.PUBLISH.getAction(), userContext));
 
         System.out.println("OK(" + context.ok(Actions.PUBLISH.getAction(), userContext).toString() + ")");
         System.out.println("OK(" + context.ok(Actions.PUBLISH.getAction(), roleContext).toString() + ")");
+
+        System.out.println("Props: " + context.getProps());
+
 
 
     }
