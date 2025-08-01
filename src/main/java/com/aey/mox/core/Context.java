@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import com.aey.mox.listeners.EventListener;
 import com.aey.mox.publisher.EventManager;
 
 /**
@@ -15,25 +16,25 @@ import com.aey.mox.publisher.EventManager;
  * 
  * <p>
  * 
- * You can subscribe multiple {@code EventListeners} to the same {@code Context} with
- * different actions, and you can also subscribe multiple {@code EventListeners} to
+ * You can subscribe multiple {@link EventListener} to the same {@code Context} with
+ * different actions, and you can also subscribe multiple {@link EventListener} to
  * the same {@code Context} with the same action. This means that
- * {@code EventListeners} can be grouped by the same action, but listen to different
+ * {@link EventListener} can be grouped by the same action, but listen to different
  * events and respond to different events.
  * 
  * <p>
  * 
  * This happens because the {@code Context} has an internal {@code HashMap} that is
- * responsible for grouping lists of {@code EventListeners} by action. And each list
- * can contain different {@code EventListeners}. Therefore, if your
- * {@code EventListeners} are registered in a different list with a different action,
+ * responsible for grouping lists of {@link EventListener} by action. And each list
+ * can contain different {@link EventListener}. Therefore, if your
+ * {@link EventListener} are registered in a different list with a different action,
  * they will not be automatically updated every time you call the {@code emit()}
- * function. But you can update all the {@code EventListeners} in a list by simply
+ * function. But you can update all the {@link EventListener} in a list by simply
  * calling the {@code emit()} function. If you want to update a specific event
- * {@code EventListener}, you will have to call the {@code notify()} function, passing
- * the {@code eventType} and the {@code EventListene} as parameters (this way, the
+ * {@link EventListener}, you will have to call the {@code notify()} function, passing
+ * the {@code eventType} and the {@link EventListener} as parameters (this way, the
  * {@code Context} will know that you only want to update a specific
- * {@code EventListener}).
+ * {@link EventListener}).
  * 
  * <p><b>Example Usage:</b></p>
  * <pre>{@code
@@ -66,8 +67,7 @@ public class Context<T, E> extends EventManager {
     /**
      * Constructs a context with operations registered in the underlying event manager.
      *
-     * @param   operations
-     *          The names of operations to register
+     * @param operations The names of operations to register
      * 
      * @since 1.0
      */
@@ -80,8 +80,7 @@ public class Context<T, E> extends EventManager {
      * data structure contains all the properties registered by all listeners.There are
      * no access restrictions and they are visible to everyone.
      * 
-     * @return  {@code Map<String, Prop<?>>}
-     *          The properties of the context
+     * @return {@code Map<String, Prop<?>>} The properties of the context
      * 
      * @since 1.0
      */
@@ -94,11 +93,8 @@ public class Context<T, E> extends EventManager {
      * Stores a typed value in the context under the given key. This method internally
      * creates a {@link Prop} instance with the {@code bind()} static method.
      *
-     * @param   key 
-     *          The key under which the value is stored
-     * 
-     * @param   value
-     *          The value to store
+     * @param   key     The key under which the value is stored 
+     * @param   value   The value to store
      * 
      * @since 1.0
      */
@@ -111,8 +107,7 @@ public class Context<T, E> extends EventManager {
      * Stores one or more {@link Prop} instances in the context. This method uses the
      * static {@code bind()} method of the {@link Prop} class to create a new instance.
      *
-     * @param   props
-     *          One or more properties to store
+     * @param props  One or more properties to store
      * 
      * @since 1.0
      */
@@ -127,13 +122,9 @@ public class Context<T, E> extends EventManager {
      * Throws {@link ClassCastException} if the actual type of the stored value
      * does not match the type stored in the corresponding {@link Prop}.
      *
-     * @param   name
-     *          The key of the property to retrieve
-     * 
-     * @param   <U>
-     *          The expected type of the value
-     * 
-     * @return  {@link Optional}
+     * @param   name    The key of the property to retrieve 
+     * @param   <U>     The expected type of the value 
+     * @return  {@link Optional} 
      *          Containing the value if present and type matches, or empty otherwise
      * 
      * @throws  ClassCastException
@@ -162,7 +153,7 @@ public class Context<T, E> extends EventManager {
 
     @Override
     public String toString() {
-        return "Context [props=" + props + ", tableListeners=" + super.tableListeners + ", err=" + err + "]";
+        return "Context {props=" + props + ", tableListeners=" + super.tableListeners + ", err=" + err + "}";
     };
 
 }

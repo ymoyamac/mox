@@ -17,19 +17,25 @@ import com.aey.mox.listeners.EventListener;
  * to register and unregister themselves with a {@code EventManager} (in order to be
  * notified of state changes) and to update their state (to synchronize it with the
  * subject's state) when they are notified.
+ * 
+ * @author ymoyamac
+ * @since 1.0
  */
 public class EventManager implements EventBus {
     protected final Map<String, List<Listener>> tableListeners = new HashMap<>();
 
+    /**
+     * Default empty constructor
+     * 
+     * @since 1.0
+     */
     public EventManager() {}
-
     
     /**
      * Constructs a {@code EventManager} and initializes the internal map with
      * predefined actions, each associated with an empty list of {@link Listener}.
      *
-     * @param   actions
-     *          The actions (event types) to register
+     * @param actions The actions (event types) to register
      * 
      * @since 1.0
      */
@@ -43,8 +49,7 @@ public class EventManager implements EventBus {
      * Registers a new action (event type) in the manager, initializing its listener
      * list.
      *
-     * @param   action 
-     *          The event type to register
+     * @param action The event type to register
      * 
      * @since 1.0
      */
@@ -61,11 +66,8 @@ public class EventManager implements EventBus {
      * Subscribes a given {@link EventListener} to the specified event type.
      * Does not emit any event or value at registration time.
      * 
-     * @param   eventType
-     *          The type of event to listen for
-     * 
-     * @param   eventListener
-     *          The listener that subscribes to the {@link EventManager}
+     * @param   eventType       The type of event to listen for 
+     * @param   eventListener   The listener that subscribes to the {@link EventManager}
      * 
      * @since 1.0
      */
@@ -79,11 +81,8 @@ public class EventManager implements EventBus {
      * Unsubscribes the given {@link EventListener} from the specified event type.
      * If the listener list becomes empty, the action is removed from the map.
      *
-     * @param   eventType
-     *          The event type to unsubscribe from
-     * 
-     * @param   eventListener
-     *          The listener to remove
+     * @param   eventType       The event type to unsubscribe from 
+     * @param   eventListener   The listener to remove
      * 
      * @since 1.0
      */
@@ -106,17 +105,10 @@ public class EventManager implements EventBus {
      * Notifies a specific {@link EventListener} of an event of the given type,
      * sending a payload object.
      *
-     * @param   <U>
-     *          The type of the payload
-     * 
-     * @param   eventType
-     *          The type of event to trigger
-     * 
-     * @param   eventListener
-     *          The specific listener to notify
-     * 
-     * @param   obj
-     *          The payload or object associated with the event
+     * @param   <U>             The type of the payload 
+     * @param   eventType       The type of event to trigger 
+     * @param   eventListener   The specific listener to notify 
+     * @param   obj             The payload or object associated with the event
      * 
      * @since 1.0
      */
@@ -136,14 +128,9 @@ public class EventManager implements EventBus {
      * Broadcasts an event to all listeners subscribed under the given event type,
      * sending a payload to each.
      *
-     * @param   <U>
-     *          The type of the payload
-     * 
-     * @param   eventType
-     *          The type of event to broadcast
-     * 
-     * @param   obj
-     *          The payload or object to send to each listener
+     * @param   <U>         The type of the payload 
+     * @param   eventType   The type of event to broadcast 
+     * @param   obj         The payload or object to send to each listener
      * 
      * @since 1.0
      */
@@ -160,12 +147,8 @@ public class EventManager implements EventBus {
      * Retrieves the last known value received by a specific listener
      * for the given event type, if available.
      *
-     * @param   eventType
-     *          The type of event
-     * 
-     * @param   eventListener
-     *          The listener to query
-     * 
+     * @param   eventType       The type of event 
+     * @param   eventListener   The listener to query 
      * @return  {@link Optional}
      *          Containing the last known value or empty if none exists
      * 
@@ -188,13 +171,11 @@ public class EventManager implements EventBus {
      * Checks whether a specific listener has a registered value and has also been
      * registered under the specified event type.
      *
-     * @param   eventType
-     *          The event type
-     * 
-     * @param   eventListener
-     *          The listener to check
-     * 
+     * @param   eventType       The event type 
+     * @param   eventListener   The listener to check 
      * @return  {@code true} if registered, {@code false} otherwise
+     * 
+     * @since 1.0
      */
     public boolean isSome(String eventType, EventListener eventListener) {
 
@@ -214,7 +195,7 @@ public class EventManager implements EventBus {
 
     @Override
     public String toString() {
-        return "EventManager [listeners=" + tableListeners + "]";
+        return "EventManager {listeners=" + tableListeners + "}";
     }
     
 }
