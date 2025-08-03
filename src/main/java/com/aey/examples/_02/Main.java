@@ -20,14 +20,14 @@ public class Main {
 
         System.out.println(context.isSome(Actions.PUBLISH.getAction(), userContext));
 
-        // Some random actions like get sequece from db
+        // Some random actions like get sequence from db
         int id = (int)(Math.random() * 100) + 1;
 
         // Set prop in context
         context.set(Prop.bind("userId", id));
 
         // Get userId prop from context and set to user
-        context.<Integer>get("userId").ifPresent(uid -> userOne.setUserId(uid));
+        context.<Integer>get("userId").ifPresent(userOne::setUserId);
 
         System.out.println(context);
 

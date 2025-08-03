@@ -1,5 +1,6 @@
 package com.aey.mox.core;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -21,7 +22,7 @@ import com.aey.mox.publisher.EventManager;
  * the same {@code Context} with the same action. This means that
  * {@link EventListener} can be grouped by the same action, but listen to different
  * events and respond to different events.
- * 
+ *
  * <p>
  * 
  * This happens because the {@code Context} has an internal {@code HashMap} that is
@@ -140,9 +141,6 @@ public class Context<T, E> extends EventManager {
             return Optional.empty();
         }
 
-        if (!prop.getClazz().isInstance(prop.getValue())) {
-            throw new ClassCastException("Expected type " + prop.getClazz() + ", but got " + prop.getValue().getClass());
-        }
         return Optional.ofNullable((U) prop.getValue());
     }
 
@@ -153,7 +151,7 @@ public class Context<T, E> extends EventManager {
 
     @Override
     public String toString() {
-        return "Context {props=" + props + ", tableListeners=" + super.tableListeners + ", err=" + err + "}";
+        return "Context {props=" + props+ ", actions=" + Arrays.toString(actions()) + ", tableListeners=" + super.tableListeners + ", err=" + err + "}";
     };
 
 }

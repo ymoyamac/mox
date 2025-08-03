@@ -23,6 +23,7 @@ import com.aey.mox.listeners.EventListener;
  */
 public class EventManager implements EventBus {
     protected final Map<String, List<Listener>> tableListeners = new HashMap<>();
+    protected String[] actions;
 
     /**
      * Default empty constructor
@@ -43,6 +44,7 @@ public class EventManager implements EventBus {
         for (String action : actions) {
             this.tableListeners.put(action, new ArrayList<>());
         }
+        this.actions = this.tableListeners.keySet().toArray(new String[0]);
     }
 
     /**
@@ -55,6 +57,10 @@ public class EventManager implements EventBus {
      */
     public final void setAction(String action) {
         this.tableListeners.put(action, new ArrayList<>());
+    }
+
+    public final String[] actions() {
+        return this.actions;
     }
 
     /**
