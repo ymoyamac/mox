@@ -23,6 +23,7 @@ import com.aey.mox.listeners.EventListener;
  */
 public class EventManager implements EventBus {
     protected final Map<String, List<Listener>> tableListeners = new HashMap<>();
+    protected String[] actions;
 
     /**
      * Default empty constructor
@@ -43,6 +44,7 @@ public class EventManager implements EventBus {
         for (String action : actions) {
             this.tableListeners.put(action, new ArrayList<>());
         }
+        this.actions = this.tableListeners.keySet().toArray(new String[0]);
     }
 
     /**
@@ -57,6 +59,10 @@ public class EventManager implements EventBus {
         this.tableListeners.put(action, new ArrayList<>());
     }
 
+    public final String[] actions() {
+        return this.actions;
+    }
+
     /**
      * Internally to the {@code EventManager}, the function {@code subscribe} does not
      * invoke a new execution that delivers values. It simply registers the given
@@ -67,7 +73,7 @@ public class EventManager implements EventBus {
      * Does not emit any event or value at registration time.
      * 
      * @param   eventType       The type of event to listen for 
-     * @param   eventListener   The listener that subscribes to the {@link EventManager}
+     * @param   eventListener   The listener that subscribes to the {@link EventManagerTest}
      * 
      * @since 1.0
      */
