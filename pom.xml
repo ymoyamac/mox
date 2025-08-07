@@ -61,6 +61,12 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <configuration>
+                            <excludes>
+                            <!-- Excluye todos los paquetes bajo com.aey.examples -->
+                                <exclude>com/aey/examples/**/*</exclude>
+                            </excludes>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
