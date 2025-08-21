@@ -1,4 +1,4 @@
-package com.aey.mox.single;
+package com.aey.mox.uni;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -98,8 +98,8 @@ public class Context<T, E> implements Subject {
 
     @Override
     public <U> void emit(String event, U obj) {
-        Observe listener = this.listeners.get(event);
-        listener.update(obj);
+        Optional<Observe> listener = Optional.ofNullable(this.listeners.get(event));
+        listener.ifPresent(observe -> observe.update(obj));
     }
 
 
