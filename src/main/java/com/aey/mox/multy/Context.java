@@ -1,12 +1,12 @@
-package com.aey.mox.core;
+package com.aey.mox.multy;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import com.aey.mox.core.Prop;
 import com.aey.mox.listeners.EventListener;
-import com.aey.mox.publisher.EventManager;
 
 /**
  * {@code Context<T, E>} is a mutable, stateless data manager designed to act as a single

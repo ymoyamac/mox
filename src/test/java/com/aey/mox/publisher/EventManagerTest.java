@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.aey.mox.listeners.EventListener;
+import com.aey.mox.multy.EventManager;
 
 public class EventManagerTest {
     private EventManager manager;

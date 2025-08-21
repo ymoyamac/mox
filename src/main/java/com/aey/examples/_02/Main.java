@@ -1,8 +1,8 @@
 package com.aey.examples._02;
 
 import com.aey.mox.core.Actions;
-import com.aey.mox.core.Context;
 import com.aey.mox.core.Prop;
+import com.aey.mox.multy.Context;
 
 public class Main {
     public static void main(String[] args) {
