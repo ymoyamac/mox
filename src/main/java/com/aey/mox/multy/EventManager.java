@@ -1,4 +1,4 @@
-package com.aey.mox.publisher;
+package com.aey.mox.multy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
