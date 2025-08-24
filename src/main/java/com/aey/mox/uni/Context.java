@@ -8,9 +8,25 @@ import com.aey.mox.core.Prop;
 import com.aey.mox.listeners.Observe;
 import com.aey.mox.listeners.Subject;
 
+/**
+ * The {@code Context} class is a generic container for storing properties
+ * ({@link Prop}), tracking events, and propagating notifications to
+ * registered listeners.
+ *
+ * It can be used to share typed values across components,
+ * subscribe/unsubscribe listeners to events, and emit payloads
+ * that are stored as the latest result.
+ *
+ * @param <T> The type of result values emitted and tracked by the context
+ * @param <E> The type used to represent errors within the context
+ *
+ * @author
+ * @since 1.0
+ */
 public class Context<T, E> implements Subject {
     private final Map<String, Prop<?>> props = new HashMap<>();
     private final Map<String, Observe> listeners = new HashMap<>();
+    private T result;
     private E err;
 
     /**
@@ -27,7 +43,6 @@ public class Context<T, E> implements Subject {
     }
 
     /**
-     * /**
      * Stores a typed value in the context under the given key. This method internally
      * creates a {@link Prop} instance with the {@code bind()} static method.
      *
@@ -86,21 +101,63 @@ public class Context<T, E> implements Subject {
         return this.err;
     }
 
+    /**
+     * Subscribes a listener to a specific event.
+     * Replaces the listener if the event was already subscribed.
+     *
+     * @param event     The event name to subscribe to
+     * @param listener  The observer that will receive updates
+     *
+     * @since 1.0
+     */
     @Override
     public void subscribe(String event, Observe listener) {
         this.listeners.put(event, listener);
     }
 
+    /**
+     * Removes the subscription to the given event,
+     * if it exists in the context.
+     *
+     * @param event The event name to unsubscribe from
+     *
+     * @since 1.0
+     */
     @Override
     public void unsubscribe(String event) {
         this.listeners.remove(event);
     }
 
+    /**
+     * Emits an event with the given payload.
+     * If a listener is subscribed to the event, it is notified
+     * and the payload is stored as the latest result.
+     *
+     * @param   event   The event name to emit
+     * @param   <U>     The type of the payload being sent
+     * @param   obj     The event payload
+     *
+     * @since 1.0
+     */
     @Override
     public <U> void emit(String event, U obj) {
         Optional<Observe> listener = Optional.ofNullable(this.listeners.get(event));
-        listener.ifPresent(observe -> observe.update(obj));
+        listener.ifPresent(observe -> {
+            observe.update(obj);
+            this.result = (T) obj;
+        });
     }
 
+    /**
+     * Returns the latest result emitted by the context, if any.
+     *
+     * @return {@link Optional} containing the last emitted value,
+     *         or empty if none has been emitted
+     *
+     * @since 1.0
+     */
+    public Optional<T> some() {
+        return Optional.ofNullable(this.result);
+    }
 
 }
