@@ -73,7 +73,7 @@ public class EventManager implements EventBus {
      * Does not emit any event or value at registration time.
      * 
      * @param   eventType       The type of event to listen for 
-     * @param   eventListener   The listener that subscribes to the {@link EventManagerTest}
+     * @param   eventListener   The listener that subscribes to the {@link EventManager}
      * 
      * @since 1.0
      */

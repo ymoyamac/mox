@@ -13,9 +13,8 @@ public interface Subject {
     /**
      * Unregisters a listener from a specific event type.
      *
-     * @param eventType the name or identifier of the event
-     * @param listener  the listener to unsubscribe
-     * 
+     * @param event the name or identifier of the event
+     *
      * @since 1.0
      */
     void unsubscribe(String event);
