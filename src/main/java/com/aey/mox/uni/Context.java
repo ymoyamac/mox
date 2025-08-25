@@ -26,7 +26,6 @@ import com.aey.mox.listeners.Subject;
 public class Context<T, E> implements Subject {
     private final Map<String, Prop<?>> props = new HashMap<>();
     private final Map<String, Observe> listeners = new HashMap<>();
-    private T result;
     private E err;
 
     /**
@@ -144,20 +143,7 @@ public class Context<T, E> implements Subject {
         Optional<Observe> listener = Optional.ofNullable(this.listeners.get(event));
         listener.ifPresent(observe -> {
             observe.update(obj);
-            this.result = (T) obj;
         });
-    }
-
-    /**
-     * Returns the latest result emitted by the context, if any.
-     *
-     * @return {@link Optional} containing the last emitted value,
-     *         or empty if none has been emitted
-     *
-     * @since 1.0
-     */
-    public Optional<T> some() {
-        return Optional.ofNullable(this.result);
     }
 
 }
